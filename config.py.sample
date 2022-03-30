@@ -3,7 +3,7 @@
 repo_path = '/home/git/misp-usage-statistics'
 all = {
     'DIR_HTML': f'{repo_path}/html/',
-    'stat_download_location': '/assets/files/circl-stats.tar.gz', # relative URL from which the stat can be downloaded
+    'stat_download_location': '/assets/files/data.tar.gz', # relative URL from which the stat can be downloaded
     'geolocation_path': 'geolocation/2022-03-15-GeoOpen-Country.mmdb',
     'start_year': 2019,
 }
