@@ -1,5 +1,8 @@
 # MISP Usage statistics
 
+![image](https://user-images.githubusercontent.com/6977223/160841628-5f695415-6ac7-4c36-bbd8-2e0dc0919f1d.png)
+
+
 # Installation
 ```bash
 cp config.py.sample config.py
