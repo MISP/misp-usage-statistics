@@ -88,48 +88,15 @@ def fetch_data():
     }
     return data
 
-
-def compile_login_data(rawData):
-    today = datetime.date.today()
-    userLoginDay = defaultdict(int)
-    userLoginYearCountry = defaultdict(lambda: defaultdict(int))
-    userLoginYearCountryName = defaultdict(set)
-    for entry in rawData:
-        entry = entry['Log']
-
-        if not entry['email'].startswith('training'):
-            continue
-
-        dateYearStr = entry['created'][:4]
-        if entry['model_id'] not in userLoginYearCountry[dateYearStr]:
-            ip = entry['ip'].split(',')[0]
-            country = getCountryFromIp(ip)
-            userLoginYearCountry[dateYearStr][country] += 1
-            userLoginYearCountryName[dateYearStr].add(entry['model_id'])
-
-        dateStr = entry['created'][:10]
-        userLoginDay[dateStr] = 1
-
-    for y in range(START_YEAR, today.year+1):
-        for m in range(1, 13):
-            if y == today.year and m == today.month+1:
-                break
-            dateStr = f'{y}-{str(m).zfill(2)}'
-            for d in range(1, monthrange(y, m)[1]+1):
-                dateStrDay = dateStr + f'-{d}'
-                userLoginDay[dateStrDay] = 0
-    return {
-        'usersLogin': userLoginDay,
-        'userLogingCountry': userLoginYearCountry,
-    }
-
-
 def compile_data(rawData):
     log('Compiling user data')
     start_timer()
     userCreation = defaultdict(int)
     for entry in rawData['users']:
         entry = entry['Log']
+        dateYearStr = entry['created'][:4]
+        if int(dateYearStr) < START_YEAR:
+            continue
         dateStr = entry['created'][:7]
         userCreation[dateStr] += 1
 
@@ -141,6 +108,9 @@ def compile_data(rawData):
     orgKnownCreation = defaultdict(int)
     for entry in rawData['orgs']:
         entry = entry['Log']
+        dateYearStr = entry['created'][:4]
+        if int(dateYearStr) < START_YEAR:
+            continue
         dateStr = entry['created'][:7]
         orgAllCreation[dateStr] += 1
         if entry['org'] == HOST_ORG:
@@ -174,6 +144,8 @@ def compile_data(rawData):
         entry = entry['Log']
     
         dateYearStr = entry['created'][:4]
+        if int(dateYearStr) < START_YEAR:
+            continue
         if entry['model_id'] not in userLoginYearCountry[dateYearStr]:
             ip = entry['ip'].split(',')[0]
             country = getCountryFromIp(ip)
@@ -209,8 +181,6 @@ def compile_data(rawData):
             for d in range(1, monthrange(y, m)[1]+1):
                 dateStrDay = dateStr + f'-{d}'
                 userLoginDay[dateStrDay] += 0
-
-    # loginData = compile_login_data(rawData)
 
     print_duration()
     data = {
