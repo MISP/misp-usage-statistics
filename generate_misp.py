@@ -34,7 +34,7 @@ def getCountryFromIp(ip):
         record = reader.country(ip)
         return record.country.iso_code
     except (geoip2.errors.AddressNotFoundError, ValueError):
-        return None
+        return 'no-ip'
 
 def log(text):
     print(text)
