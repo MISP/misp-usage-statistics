@@ -15,6 +15,7 @@ from config import all as all_conf
 DIR = misp_conf['DIR']
 BASE_URL = misp_conf['baseurl']
 AUTHKEY = misp_conf['authkey']
+HOST_ORG = misp_conf['MISP.host_org']
 GEOLOCATION_PATH = all_conf['geolocation_path']
 START_YEAR = all_conf['start_year']
 HEADERS = {
@@ -142,7 +143,7 @@ def compile_data(rawData):
         entry = entry['Log']
         dateStr = entry['created'][:7]
         orgAllCreation[dateStr] += 1
-        if entry['org'] == 'CIRCL':
+        if entry['org'] == HOST_ORG:
             orgLocalCreation[dateStr] += 1
         else:
             orgKnownCreation[dateStr] += 1

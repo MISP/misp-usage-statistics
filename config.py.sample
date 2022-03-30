@@ -11,6 +11,7 @@ all = {
 misp = {
     'baseurl': 'https://misp.test',
     'authkey': '*****',
+    'MISP.host_org': 'CIRCL',
     'DIR': f'{repo_path}/data/misp/',
     'DIR_HTML': f'{repo_path}/html/misp/',
 }
